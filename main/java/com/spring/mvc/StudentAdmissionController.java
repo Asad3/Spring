@@ -1,8 +1,14 @@
 package com.spring.mvc;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +21,12 @@ import com.spring.mvc.data.Student;
 @RequestMapping(value="/admissionform")
 public class StudentAdmissionController {
 
+	@InitBinder
+	public void initBinder(WebDataBinder binder){
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-mm-dd");
+		binder.registerCustomEditor(Date.class, "dob",new CustomDateEditor(date, false));
+	}
+	
 	@RequestMapping(value="/form.html", method = RequestMethod.GET)
 	public ModelAndView getStudentForm(){
 		ModelAndView model = new ModelAndView("StudentForm");
